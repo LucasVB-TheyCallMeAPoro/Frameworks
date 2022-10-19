@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +64,7 @@ public class BlogController {
      * Creates a new BlogPost, setting its URL as the Location header on the
      * response.
      */
+    @Secured("ROLE_ADMIN")
     @PostMapping("/posts")
     public ResponseEntity<Void> addPost(@RequestBody BlogPost post) {
         this.postsCreateCounter.increment();
@@ -78,6 +80,7 @@ public class BlogController {
     /**
      * Removes the blogPost with the given id.
      */
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/posts/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable("id") long id) {
@@ -89,6 +92,7 @@ public class BlogController {
      * Update the blogPost with the given id.
      * Return http status 409 (Conflict) if id's do not match between body and path.
      */
+    @Secured("ROLE_ADMIN")
     @PutMapping("/posts/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePost(@RequestBody BlogPost post, @PathVariable("id") long id) {
